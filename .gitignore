@@ -1,0 +1,5 @@
+Server/node_modules
+WebApp/node_modules
+.vscode
+Server/package-lock.json
+WebApp/package-lock.json

@@ -1,27 +1,26 @@
-import { Injectable } from "@angular/core";
-import { Http, Response } from "@angular/http";
-import "rxjs/add/operator/map";
+import { Injectable } from '@angular/core';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { map} from 'rxjs/operators';
+import { catchError } from 'rxjs/operators';
+import { AppConfig } from '../../_services/app-config.service';
 
-@Injectable()
+@Injectable({ providedIn: 'root'})
 export class AuthenticationService {
+  constructor(private httpClient: HttpClient) { }
+  
+  protected apiServer = AppConfig.settings.apiServer;
 
-    constructor(private http: Http) {
-    }
-
-    login(email: string, password: string) {
-        return this.http.post('/api/authenticate', JSON.stringify({ email: email, password: password }))
-            .map((response: Response) => {
-                // login successful if there's a jwt token in the response
-                let user = response.json();
-                if (user && user.token) {
-                    // store user details and jwt token in local storage to keep user logged in between page refreshes
-                    localStorage.setItem('currentUser', JSON.stringify(user));
-                }
-            });
-    }
-
-    logout() {
-        // remove user from local storage to log user out
-        localStorage.removeItem('currentUser');
-    }
+  login (email: string, password: string){
+      return this.httpClient.post<any>(`${this.apiServer.metadata}/users/login`, JSON.stringify({email: email, password: password}), {
+        headers: new HttpHeaders().set('Content-Type', 'application/json; charset=utf-8'),
+      })
+        .pipe(map((res: any) =>{
+          if(res && res.token) {
+            localStorage.setItem('currentUser', JSON.stringify({user: res.user, token: res.token}))
+          }
+        }));
+  }
+  logout() {
+    localStorage.removeItem('currentUser');
+  }
 }
