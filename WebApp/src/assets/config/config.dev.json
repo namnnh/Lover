@@ -15,7 +15,7 @@
     "clientId": "<dev-guid-here>"
     },
     "apiServer": {
-    "metadata": "http://192.168.0.100:3001/v1",
-    "rules": "http://192.168.0.100:3001/v1"
+    "metadata": "/api",
+    "rules": "/api"
     }
 }

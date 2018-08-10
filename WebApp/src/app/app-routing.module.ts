@@ -4,8 +4,16 @@ import { LogoutComponent } from "./auth/logout/logout.component";
 
 const routes: Routes = [
     { path: 'login', loadChildren: './auth/auth.module#AuthModule' },
+    { path : 'customer', loadChildren: './customer/customer.module#CustomerModule'},
+    { path : 'accountant', loadChildren: './accountant/accountant.module#AccountantModule'},
+    { path : 'admin', loadChildren: './admin/admin.module#AdminModule'},
     { path: 'logout', component: LogoutComponent },
-    { path: '', redirectTo: 'index', pathMatch: 'full' },
+    { path: '', loadChildren: './web/web.module#WebModule', pathMatch: 'full' },
+    {
+        "path": "**",
+        "redirectTo": "admin/404",
+        "pathMatch": "full"
+    }
 ];
 
 @NgModule({
